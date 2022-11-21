@@ -6,22 +6,26 @@ export const Item = ({
   //   description,
   //   Image_main,
   //   price,
-  clothing,
+  products,
 }) => {
+  console.log(products);
   return (
     <div>
-      <h1>{clothing.title}</h1>
-      <h2>{clothing.price}</h2>
-      <h2>{clothing.size}</h2>
-      <h2>{clothing.description}</h2>
+      <h2>{products.id}</h2>
+      <h1>{products.attributes.name}</h1>
+      <h2>{products.attributes.price}</h2>
+      <h2>{products.attributes.brands}</h2>
 
-      <Image
-        src={clothing.Image_main.data[0].attributes.formats.medium.url}
+      {/* <h2>{products.size}</h2> */}
+      <h2>{products.attributes.description}</h2>
+
+      {/* <Image
+        src={products.Image_main.data[0].attributes.formats.medium.url}
         width={170}
         height={100}
         alt="test"
         priority
-      />
+      /> */}
     </div>
   );
 };

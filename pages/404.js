@@ -4,9 +4,7 @@ export default function NotFound() {
   return (
     <div>
       <h1>Does not Exist 404</h1>
-      <Link href={`/`}>
-        <a>Home</a>
-      </Link>
+      <Link href={`/`}>Home</Link>
     </div>
   );
 }

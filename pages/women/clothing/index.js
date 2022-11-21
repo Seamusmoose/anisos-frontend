@@ -2,22 +2,22 @@ import { Item } from "@/components/Item";
 import Layout from "@/components/Layout";
 import { API_URL } from "@/config/index";
 
-export default function ClothingIndexWomen({ clothing }) {
+export default function ClothingIndexWomen({ products }) {
   return (
     <Layout>
-      <h1>Clothing</h1>
+      <h1>products</h1>
 
-      {clothing.data.map((clothing) => {
-        return <Item key={clothing.id} clothing={clothing.attributes} />;
+      {products.data.map((products) => {
+        return <Item key={products.id} products={products} />;
       })}
     </Layout>
   );
 }
 
 export async function getServerSideProps() {
-  const res = await fetch(`${API_URL}/api/clothing?populate=*`);
-  const clothing = await res.json();
+  const res = await fetch(`${API_URL}/api/products?populate=*`);
+  const products = await res.json();
   return {
-    props: { clothing },
+    props: { products },
   };
 }

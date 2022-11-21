@@ -34,7 +34,6 @@ export async function getServerSideProps({ query: { term } }) {
   const res = await fetch(`${API_URL}/api/clothing?${query}`);
   const clothing = await res.json();
 
-  console.log(clothing);
 
   return {
     props: { clothing },
