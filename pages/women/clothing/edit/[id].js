@@ -7,19 +7,23 @@ import Link from "next/link";
 import Layout from "@/components/Layout";
 import { API_URL } from "@/config/index";
 import Image from "next/image";
+import Modal from "@/components/Modal";
+import ImageUpload from "@/components/ImageUpload";
+
 // import styles from '@/styles/Form.module.css'
 
 export default function UpdateClothingWomen({ product }) {
-  console.log(product);
+  // console.log(product, "h");
 
   // const { name, description, price, brand, category } = product.data.attributes;
-  const test = "";
+
   const [values, setValues] = useState({
-    name: test,
-    description: test,
-    price: test,
-    brand: test,
-    category: test,
+    name: product.data.attributes.name,
+    description: product.data.attributes.description,
+    price: product.data.attributes.price,
+    brand: product.data.attributes.brand,
+    category: product.data.attributes.category,
+    image: product.data.attributes.Thumbnail.data.attributes.formats.medium.url,
   });
 
   const router = useRouter();
@@ -60,7 +64,27 @@ export default function UpdateClothingWomen({ product }) {
     }
   };
 
-  const [imagePreview, setImagePreview] = useState();
+  const [imagePreview, setImagePreview] = useState(
+    product.data.attributes.Carousel
+      ? product.data.attributes.Thumbnail.data.attributes.formats.medium.url
+      : ""
+  );
+  const [showModal, setShowModal] = useState(false);
+
+  const imageUploaded = async (e) => {
+    try {
+      const res = await fetch(`${API_URL}/api/products/${product.id}`);
+      const data = await res.json();
+      console.log(data, "data");
+      setImagePreview(
+        data.attributes.Thumbnail.data.attributes.formats.medium.url
+      );
+      showModal(false);
+      
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <Layout>
@@ -126,14 +150,21 @@ export default function UpdateClothingWomen({ product }) {
       </form>
 
       <h2>Event Image</h2>
+      <div onClick={() => setShowModal(true)}>
+        <button>set Image</button>
+      </div>
 
       {imagePreview ? (
-        <Image src={imagePreview} height={100} width={170} />
+        <Image src={imagePreview} height={100} width={170} alt="thumb" />
       ) : (
         <div>
           <p>No Photo Provided</p>
         </div>
       )}
+
+      <Modal show={showModal} onClose={() => setShowModal(false)}>
+        <ImageUpload prodId={product.id} imageUploaded={imageUploaded} />
+      </Modal>
     </Layout>
   );
 }
