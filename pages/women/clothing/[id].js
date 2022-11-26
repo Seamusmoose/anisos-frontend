@@ -2,33 +2,30 @@ import { API_URL } from "@/config/index";
 import Image from "next/image";
 import { useRouter } from "next/router";
 
-
-export default function ClothingItemWomen({ evt, id }) {
+export default function ClothingItemWomen({ product, id }) {
   const router = useRouter();
-  console.log(evt);
+  console.log(product);
   return (
     <div>
-      <h1>{evt.data.attributes.name}</h1>
-      <Image
-        src={evt.data.attributes.Carousel.data[0].attributes.formats.medium.url}
+      <h1>{product.data.attributes.name}</h1>
+      {/* <Image
+        src={product.data.attributes.image.data.attributes.formats.medium.url}
         height={200}
         width={270}
         alt="product-Image-med"
-      />
+      /> */}
     </div>
   );
 }
 
 export async function getServerSideProps({ params: { id } }) {
-  const res = await fetch(`http://${API_URL}/api/products/${id}?populate=*`);
+  const res = await fetch(`${API_URL}/api/products/${id}?populate=*`);
 
-  const event = await res.json();
-
-  console.log(event, "ev");
+  const product = await res.json();
 
   return {
     props: {
-      evt: event,
+      product: product,
       id,
     },
   };

@@ -13,18 +13,21 @@ import ImageUpload from "@/components/ImageUpload";
 // import styles from '@/styles/Form.module.css'
 
 export default function UpdateClothingWomen({ product }) {
-  // console.log(product, "h");
+  console.log(product, "h");
 
   // const { name, description, price, brand, category } = product.data.attributes;
 
   const [values, setValues] = useState({
+    // id: product.data.id,
     name: product.data.attributes.name,
     description: product.data.attributes.description,
     price: product.data.attributes.price,
-    brand: product.data.attributes.brand,
-    category: product.data.attributes.category,
-    image: product.data.attributes.Thumbnail.data.attributes.formats.medium.url,
+    brand: product.data.attributes.brand.data.attributes.name,
+    category: product.data.attributes.category.data.attributes.name,
+    image: product.data.attributes.image.data.attributes.formats.medium.url,
   });
+
+  console.log(values, "v");
 
   const router = useRouter();
 
@@ -48,8 +51,8 @@ export default function UpdateClothingWomen({ product }) {
       headers: {
         "Content-Type": "application/json",
       },
-      // body: JSON.stringify(values),
-      body: JSON.stringify({ data: values }),
+      //body: JSON.stringify(values),
+      body: JSON.stringify({ data: { values } }),
     });
 
     if (!res.ok) {
@@ -59,28 +62,29 @@ export default function UpdateClothingWomen({ product }) {
       }
       toast.error("Something Went Wrong");
     } else {
-      const prodPost = await res.json();
-      router.push(`/women/clothing/${prodPost.data.id}`);
+      const product = await res.json();
+      router.push(`/women/clothing/${product.data.id}`);
     }
   };
 
   const [imagePreview, setImagePreview] = useState(
-    product.data.attributes.Carousel
-      ? product.data.attributes.Thumbnail.data.attributes.formats.medium.url
+    product.data.attributes.image
+      ? product.data.attributes.image.data.attributes.formats.medium.url
       : ""
   );
   const [showModal, setShowModal] = useState(false);
 
   const imageUploaded = async (e) => {
     try {
-      const res = await fetch(`${API_URL}/api/products/${product.id}`);
+      const res = await fetch(
+        `${API_URL}/api/products/${product.data.id}?populate=*`
+      );
       const data = await res.json();
       console.log(data, "data");
       setImagePreview(
-        data.attributes.Thumbnail.data.attributes.formats.medium.url
+        data.data.attributes.image.data.attributes.formats.medium.url
       );
-      showModal(false);
-      
+      setShowModal(false);
     } catch (error) {
       console.log(error);
     }
@@ -117,7 +121,7 @@ export default function UpdateClothingWomen({ product }) {
           <div>
             <label htmlFor="price">price</label>
             <input
-              type="text"
+              type="number"
               id="price"
               name="price"
               value={values.price}
@@ -163,7 +167,7 @@ export default function UpdateClothingWomen({ product }) {
       )}
 
       <Modal show={showModal} onClose={() => setShowModal(false)}>
-        <ImageUpload prodId={product.id} imageUploaded={imageUploaded} />
+        <ImageUpload prodId={product.data.id} imageUploaded={imageUploaded} />
       </Modal>
     </Layout>
   );
@@ -173,7 +177,7 @@ export async function getServerSideProps({ params: { id } }) {
   const res = await fetch(`${API_URL}/api/products/${id}?populate=*`);
   const product = await res.json();
 
-  console.log(product);
+  console.log(product, "p");
 
   return {
     props: {

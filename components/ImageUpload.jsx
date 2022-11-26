@@ -5,7 +5,7 @@ import styles from "@/styles/Form.module.css";
 export default function ImageUpload({ prodId, imageUploaded, test }) {
   const [image, setImage] = useState(null);
 
-console.log(prodId);
+  console.log(prodId);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -13,7 +13,7 @@ console.log(prodId);
     const formData = new FormData();
     formData.append("files", image);
     formData.append("ref", "api::product.product");
-    formData.append("refId", prodId);
+    // formData.append("refId", prodId);
     formData.append("field", "image");
     const res = await fetch(`${API_URL}/api/upload`, {
       method: "POST",

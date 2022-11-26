@@ -13,8 +13,8 @@ export default function AddClothingWomen() {
     name: "",
     description: "",
     price: "",
-    brand: "",
-    category: "",
+    // brand: "",
+    // category: "",
   });
 
   const router = useRouter();
@@ -94,7 +94,7 @@ export default function AddClothingWomen() {
               onChange={handleInputChange}
             />
           </div>
-          <div>
+          {/* <div>
             <label htmlFor="brand">brand</label>
             <input
               type="text"
@@ -113,7 +113,7 @@ export default function AddClothingWomen() {
               value={values.category}
               onChange={handleInputChange}
             />
-          </div>
+          </div> */}
         </div>
 
         <input type="submit" value="Add product" className="btn" />
