@@ -34,7 +34,7 @@ export default async (req, res) => {
       res.status(data.error.status).json({ message: data.error.message });
     }
 
-    console.log(req.body);
+    // console.log(req.body);
   } else {
     res.setHeader("Allow", ["POST"]);
     res.setHeader(405).json({ message: `Method: ${req.method} not allowed` });

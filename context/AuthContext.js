@@ -11,7 +11,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
 
-  console.log(user, "u");
+//   console.log(user, "u");
   const router = useRouter();
 
   useEffect(() => {
@@ -36,7 +36,7 @@ export const AuthProvider = ({ children }) => {
     checkUserLoggedIn();
   }, []);
 
-  console.log(user, error);
+//   console.log(user, error);
 
   const register = async (user) => {};
 

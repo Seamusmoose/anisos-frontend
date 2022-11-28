@@ -6,6 +6,8 @@ export default function DashboardPage({ products, token }) {
   const router = useRouter();
   const { user } = useAuth();
 
+console.log(user, 'uzer');
+
   if (!user) {
     return null;
   }

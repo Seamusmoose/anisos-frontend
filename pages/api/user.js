@@ -11,7 +11,7 @@ export default async (req, res) => {
 
     // console.log(token, "t");
 
-    const strapiRes = await fetch(`${API_URL}/products`, {
+    const strapiRes = await fetch(`${API_URL}/api/products`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,

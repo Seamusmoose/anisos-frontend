@@ -1,4 +1,5 @@
 // import { parseCookies } from '@/helpers/index'
+import { useAuth } from "hooks/useAuth";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useState } from "react";
@@ -9,12 +10,14 @@ import { API_URL } from "@/config/index";
 import Image from "next/image";
 import Modal from "@/components/Modal";
 import ImageUpload from "@/components/ImageUpload";
-import { useAuth } from "hooks/useAuth";
+
 // import styles from '@/styles/Form.module.css'
 
 export default function UpdateClothingWomen({ product }) {
   const { user } = useAuth();
   const router = useRouter();
+
+  console.log(user, "user");
 
   // if (!user) {
   //   return null;
