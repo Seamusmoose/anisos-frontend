@@ -9,12 +9,16 @@ import { API_URL } from "@/config/index";
 import Image from "next/image";
 import Modal from "@/components/Modal";
 import ImageUpload from "@/components/ImageUpload";
-
+import { useAuth } from "hooks/useAuth";
 // import styles from '@/styles/Form.module.css'
 
 export default function UpdateClothingWomen({ product }) {
-  console.log(product, "h");
+  const { user } = useAuth();
+  const router = useRouter();
 
+  // if (!user) {
+  //   return null;
+  // }
   // const { name, description, price, brand, category } = product.data.attributes;
 
   const [values, setValues] = useState({
@@ -27,9 +31,7 @@ export default function UpdateClothingWomen({ product }) {
     image: product.data.attributes.image.data.attributes.formats.medium.url,
   });
 
-  console.log(values, "v");
-
-  const router = useRouter();
+  // console.log(values, "v");
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -80,7 +82,7 @@ export default function UpdateClothingWomen({ product }) {
         `${API_URL}/api/products/${product.data.id}?populate=*`
       );
       const data = await res.json();
-      console.log(data, "data");
+      // console.log(data, "data");
       setImagePreview(
         data.data.attributes.image.data.attributes.formats.medium.url
       );
@@ -173,15 +175,18 @@ export default function UpdateClothingWomen({ product }) {
   );
 }
 
-export async function getServerSideProps({ params: { id } }) {
+export async function getServerSideProps({ params: { id }, req }) {
+  // const { token } = parseCookies(req);
   const res = await fetch(`${API_URL}/api/products/${id}?populate=*`);
   const product = await res.json();
 
-  console.log(product, "p");
+  // console.log(req.headers.cookie, "c");
+  // console.log(product, "p");
 
   return {
     props: {
       product,
+      // token: token || "",
     },
   };
 }
