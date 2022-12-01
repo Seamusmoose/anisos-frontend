@@ -14,10 +14,12 @@ import ImageUpload from "@/components/ImageUpload";
 // import styles from '@/styles/Form.module.css'
 
 export default function UpdateClothingWomen({ product, token }) {
+
   const { user } = useAuth();
   const router = useRouter();
 
   console.log(user, "userr");
+  console.log(product);
 
   if (!user) {
     return null;
