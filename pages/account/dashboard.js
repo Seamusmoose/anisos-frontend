@@ -11,6 +11,7 @@ export default function DashboardPage({ products, token }) {
 
   const deleteEvent = (id) => {
     console.log(id);
+    'log'
   }
 
   if (!user) {
