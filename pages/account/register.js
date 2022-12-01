@@ -31,14 +31,14 @@ export default function register() {
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
-           <input
+          <input
             type="text"
             name="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
           <input
-            type="text"
+            type="password"
             name="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -46,8 +46,8 @@ export default function register() {
           <div>
             Confirm Password
             <input
-              type="text"
-              name="passwordCOnfirm"
+              type="password"
+              name="passwordConfirm"
               value={passwordConfirm}
               onChange={(e) => setPasswordConfirm(e.target.value)}
             />

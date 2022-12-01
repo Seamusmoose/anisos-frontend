@@ -11,7 +11,7 @@ export default function login() {
 
   const { login, error } = useAuth();
 
-//   useEffect(() => error && toast.error(error), []);
+  //   useEffect(() => error && toast.error(error), []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -21,7 +21,7 @@ export default function login() {
 
   return (
     <Layout>
-        <ToastContainer />
+      <ToastContainer />
       <div>
         <form onSubmit={handleSubmit}>
           <input
@@ -31,7 +31,7 @@ export default function login() {
             onChange={(e) => setEmail(e.target.value)}
           />
           <input
-            type="text"
+            type="password"
             name="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
