@@ -1,4 +1,4 @@
-// import { parseCookies } from '@/helpers/index'
+import parseCookies from "@/helpers/index";
 import { useAuth } from "hooks/useAuth";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -13,15 +13,15 @@ import ImageUpload from "@/components/ImageUpload";
 
 // import styles from '@/styles/Form.module.css'
 
-export default function UpdateClothingWomen({ product }) {
+export default function UpdateClothingWomen({ product, token }) {
   const { user } = useAuth();
   const router = useRouter();
 
-  console.log(user, "user");
+  console.log(user, "userr");
 
-  // if (!user) {
-  //   return null;
-  // }
+  if (!user) {
+    return null;
+  }
   // const { name, description, price, brand, category } = product.data.attributes;
 
   const [values, setValues] = useState({
@@ -55,10 +55,13 @@ export default function UpdateClothingWomen({ product }) {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       //body: JSON.stringify(values),
       body: JSON.stringify({ data: { values } }),
     });
+
+    console.log(res.body);
 
     if (!res.ok) {
       if (res.status === 403 || res.status === 401) {
@@ -103,7 +106,7 @@ export default function UpdateClothingWomen({ product }) {
       <form onSubmit={handleSubmit}>
         <div>
           <div>
-            <label htmlFor="name">Event Name</label>
+            <label htmlFor="name"> Name</label>
             <input
               type="text"
               id="name"
@@ -113,7 +116,7 @@ export default function UpdateClothingWomen({ product }) {
             />
           </div>
           <div>
-            <label htmlFor="description">Event Description</label>
+            <label htmlFor="description"> Description</label>
             <textarea
               type="text"
               name="description"
@@ -172,24 +175,21 @@ export default function UpdateClothingWomen({ product }) {
       )}
 
       <Modal show={showModal} onClose={() => setShowModal(false)}>
-        <ImageUpload prodId={product.data.id} imageUploaded={imageUploaded} />
+        <ImageUpload prodId={product.data.id} token={token} imageUploaded={imageUploaded} />
       </Modal>
     </Layout>
   );
 }
 
 export async function getServerSideProps({ params: { id }, req }) {
-  // const { token } = parseCookies(req);
+  const { token } = parseCookies(req);
   const res = await fetch(`${API_URL}/api/products/${id}?populate=*`);
   const product = await res.json();
-
-  // console.log(req.headers.cookie, "c");
-  // console.log(product, "p");
 
   return {
     props: {
       product,
-      // token: token || "",
+      token: token || "",
     },
   };
 }

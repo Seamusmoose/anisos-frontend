@@ -1,4 +1,4 @@
-// import { parseCookies } from '@/helpers/index'
+import parseCookies from "@/helpers/index";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useState } from "react";
@@ -6,15 +6,20 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import Layout from "@/components/Layout";
 import { API_URL } from "@/config/index";
+import ImageUpload from "@/components/ImageUpload";
+import Modal from "@/components/Modal";
 // import styles from '@/styles/Form.module.css'
 
-export default function AddClothingWomen() {
+export default function AddClothingWomen({ token }) {
+  const [imagePreview, setImagePreview] = useState(null);
+  const [showModal, setShowModal] = useState(false);
   const [values, setValues] = useState({
     name: "",
     description: "",
     price: "",
     // brand: "",
     // category: "",
+    // image: "",
   });
 
   const router = useRouter();
@@ -38,10 +43,13 @@ export default function AddClothingWomen() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       // body: JSON.stringify(values),
       body: JSON.stringify({ data: values }),
     });
+
+    console.log(res.body.data);
 
     if (!res.ok) {
       if (res.status === 403 || res.status === 401) {
@@ -54,17 +62,33 @@ export default function AddClothingWomen() {
       router.push(`/women/clothing/${evt.data.id}`);
       console.log(evt, "t");
     }
+
+    // const imageUploaded = async (e) => {
+    //   try {
+    //     const res = await fetch(
+    //       `${API_URL}/api/products/${product.data.id}?populate=*`
+    //     );
+    //     const data = await res.json();
+    //     // console.log(data, "data");
+    //     setImagePreview(
+    //       data.data.attributes.image.data.attributes.formats.medium.url
+    //     );
+    //     setShowModal(false);
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // };
   };
 
   return (
     <Layout>
       <Link href="/women/clothing">Go Back</Link>
-      <h1>Add Event</h1>
+      <h1>create product</h1>
       <ToastContainer />
       <form onSubmit={handleSubmit}>
         <div>
           <div>
-            <label htmlFor="name">Event Name</label>
+            <label htmlFor="name"> Name</label>
             <input
               type="text"
               id="name"
@@ -74,7 +98,7 @@ export default function AddClothingWomen() {
             />
           </div>
           <div>
-            <label htmlFor="description">Event Description</label>
+            <label htmlFor="description"> Description</label>
             <textarea
               type="text"
               name="description"
@@ -87,7 +111,7 @@ export default function AddClothingWomen() {
           <div>
             <label htmlFor="price">price</label>
             <input
-              type="text"
+              type="number"
               id="price"
               name="price"
               value={values.price}
@@ -105,7 +129,7 @@ export default function AddClothingWomen() {
             />
           </div>
           <div>
-            <label htmlFor="category">Event category</label>
+            <label htmlFor="category"> category</label>
             <input
               type="text"
               id="category"
@@ -116,8 +140,35 @@ export default function AddClothingWomen() {
           </div> */}
         </div>
 
-        <input type="submit" value="Add product" className="btn" />
+        <input type="submit" value="create product" className="btn" />
       </form>
+
+      <h2>Event Image</h2>
+      {/* <div onClick={() => setShowModal(true)}>
+        <button>set Image</button>
+      </div> */}
+
+      {/* {imagePreview ? (
+        <Image src={imagePreview} height={100} width={170} alt="thumb" />
+      ) : (
+        <div>
+          <p>No Photo Provided</p>
+        </div>
+      )} */}
+
+      {/* <Modal show={showModal} onClose={() => setShowModal(false)}>
+        <ImageUpload prodId={product.data.id} imageUploaded={imageUploaded} />
+      </Modal> */}
     </Layout>
   );
+}
+
+export async function getServerSideProps({ req }) {
+  const { token } = parseCookies(req);
+
+  return {
+    props: {
+      token,
+    },
+  };
 }

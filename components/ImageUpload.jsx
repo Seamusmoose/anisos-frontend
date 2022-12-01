@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import { API_URL } from "../config";
 import styles from "@/styles/Form.module.css";
 
-export default function ImageUpload({ prodId, imageUploaded, test }) {
+export default function ImageUpload({ prodId, imageUploaded, token }) {
   const [image, setImage] = useState(null);
 
-  console.log(prodId);
+  // console.log(image, "i");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -13,15 +13,23 @@ export default function ImageUpload({ prodId, imageUploaded, test }) {
     const formData = new FormData();
     formData.append("files", image);
     formData.append("ref", "api::product.product");
-    // formData.append("refId", prodId);
+    formData.append("refId", prodId);
     formData.append("field", "image");
+
+    console.log(formData, "form");
+
     const res = await fetch(`${API_URL}/api/upload`, {
       method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
       body: formData,
     });
 
+    console.log(res.body, "bodyyy");
+
     if (res.ok) {
-      imageUploaded();
+       imageUploaded();
     }
   };
 
@@ -31,9 +39,6 @@ export default function ImageUpload({ prodId, imageUploaded, test }) {
 
   return (
     <div>
-      <button type="button" onClick={test}>
-        test
-      </button>
       <h1>upload Image</h1>
       <form onSubmit={handleSubmit}>
         <div>
